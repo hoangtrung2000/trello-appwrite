@@ -1,8 +1,16 @@
 "use client";
-import Image from "next/image";
+import useDebounce from "@/hooks/useDebounce";
+import { useBoardStore } from "@/store/BoardStore";
 import { MagnifyingGlassIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import Image from "next/image";
 import Avatar from "react-avatar";
 const Header = () => {
+  const [searchString, setSearchString] = useBoardStore((state) => [
+    state.searchString,
+    state.setSearchString,
+  ]);
+  const { value: debouncedValue } = useDebounce(searchString, setSearchString);
+
   return (
     <header>
       <div className="bg- flex flex-col items-center bg-gray-500/10 p-5 md:flex-row">
@@ -22,6 +30,8 @@ const Header = () => {
             <input
               type="text"
               placeholder="Search"
+              value={debouncedValue}
+              onChange={(e) => setSearchString(e.target.value)}
               className="flex-1 p-2 outline-none "
             />
             <button hidden>Search</button>
