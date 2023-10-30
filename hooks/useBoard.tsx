@@ -30,6 +30,7 @@ const useBoard = (): useBoardResult => {
       entries.splice(destination.index, 0, remove);
       const rearrangedColumns = new Map(entries); // copy entries variable but is a map object
       setBoard({ ...board, columns: rearrangedColumns });
+      return;
     }
 
     const columns = Array.from(board.columns.entries());
