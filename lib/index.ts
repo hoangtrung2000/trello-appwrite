@@ -1,4 +1,4 @@
-import { database } from "@/appwrite";
+import { ID, storage, database } from "@/appwrite";
 
 export const getTodosGroupedByColumns = async () => {
   const data = await database.listDocuments(
@@ -46,4 +46,19 @@ export const getTodosGroupedByColumns = async () => {
   };
 
   return board;
+};
+
+export const uploadImage = async (file: File) => {
+  if (!file || !process.env.NEXT_PUBLIC_BUCKET_ID) return;
+  const fileUploaded = await storage.createFile(
+    process.env.NEXT_PUBLIC_BUCKET_ID,
+    ID.unique(),
+    file,
+  );
+  return fileUploaded;
+};
+
+export const getUrl = async (image: Image) => {
+  const url = await storage.getFilePreview(image.bucketId, image.fileId);
+  return url;
 };
